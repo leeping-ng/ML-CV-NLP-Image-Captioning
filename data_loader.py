@@ -1,3 +1,6 @@
+"""
+Adapted from Udacity's Computer Vision nanodegree assignment
+"""
 import nltk
 import os
 import torch
@@ -130,6 +133,7 @@ class CoCoDataset(data.Dataset):
             caption.append(self.vocab(self.vocab.start_word))
             # Example return: [0, 3, 98, 754, 3, 396]
             caption.extend([self.vocab(token) for token in tokens])
+            # Add <end> which is integer 1, so now it's [0, 3, 98, 754, 3, 396, 1]
             caption.append(self.vocab(self.vocab.end_word))
             caption = torch.Tensor(caption).long()
 
@@ -149,6 +153,11 @@ class CoCoDataset(data.Dataset):
             return orig_image, image
 
     def get_train_indices(self):
+        """
+        First, sample a caption length
+        Then, samples indices corresponding to training data points with captions of that length
+        Lastly, stores the indices
+        """
         sel_length = np.random.choice(self.caption_lengths)
         all_indices = np.where([self.caption_lengths[i] == sel_length for i in np.arange(len(self.caption_lengths))])[0]
         indices = list(np.random.choice(all_indices, size=self.batch_size))

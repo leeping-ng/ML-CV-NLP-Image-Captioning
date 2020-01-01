@@ -1,3 +1,6 @@
+"""
+Adapted from Udacity's Computer Vision nanodegree assignment
+"""
 import nltk
 import pickle
 import os.path
